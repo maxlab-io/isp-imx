@@ -78,4 +78,4 @@ include(${UNITS_TOP_DIRECTORY}/targets.cmake)
 
 # add sensor driver modules here
 add_subdirectory( drv/OS08a20 )
-
+add_subdirectory( drv/OV5647 )
