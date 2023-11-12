@@ -10,6 +10,7 @@ RUNTIME_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 NR_DEVICE_TREE_BASLER=$(grep basler-camera-vvcam `find /sys/firmware/devicetree/base/soc@0/ -name compatible | grep i2c` -l | wc -l 2> /dev/null)
 NR_DEVICE_TREE_OV5640=$(grep ov5640 `find /sys/firmware/devicetree/base/soc@0/ -name compatible | grep i2c` -l | wc -l 2> /dev/null)
 NR_DEVICE_TREE_OS08A20=$(grep os08a20 `find /sys/firmware/devicetree/base/soc@0/ -name compatible | grep i2c` -l | wc -l 2> /dev/null)
+NR_DEVICE_TREE_OV5647=$(grep ov5647 `find /sys/firmware/devicetree/base/soc@0/ -name compatible | grep i2c` -l | wc -l 2> /dev/null)
 
 
 # check if the basler device has been enabled in the device tree
@@ -41,6 +42,17 @@ elif [ $NR_DEVICE_TREE_BASLER -eq 2 ]; then
 	# Default configuration for Basler daA3840-30mc: dual_basler_1080p60
 	# Available configurations: dual_basler_1080p60, dual_basler_1080p60hdr
 	exec ./run.sh -c dual_basler_1080p60 -lm
+
+# check if the ov5647 device has been enabled in the device tree
+elif [ $NR_DEVICE_TREE_OV5647 -eq 1 ]; then
+
+        echo "Starting isp_media_server for Single ov5647"
+
+        cd $RUNTIME_DIR
+        # Default configuration for OV5647: ov5647_1080p60
+        # Available configurations: ov5647_1080p60
+        exec ./run.sh -c ov5647_1080p60 -lm
+
 # check if the os08a20 device has been enabled in the device tree
 elif [ $NR_DEVICE_TREE_OS08A20 -eq 1 ]; then
 

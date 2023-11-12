@@ -34,6 +34,8 @@ USAGE+="\tos08a20_1080p60hdr      - single os08a20 camera on MIPI-CSI1, 1920x108
 USAGE+="\tdual_os08a20_1080p60hdr - dual os08a20 cameras on MIPI-CSI1/2, 1920x1080, 60 fps, HDR configuration\n"
 USAGE+="\tos08a20_4khdr           - single os08a20 camera on MIPI-CSI1, 3840x2160, 30 fps, HDR configuration\n"
 
+USAGE+="\tov5647_1080p60         - single ov5647 camera on MIPI-CSI1, 1920x1080, 60 fps\n"
+
 # parse command line arguments
 while [ "$1" != "" ]; do
 	case $1 in
@@ -87,6 +89,12 @@ write_default_mode_files () {
 	echo "[mode.3]" >> DAA3840_MODES.txt
 	echo "xml = \"DAA3840_30MC_1080P-hdr.xml\"" >> DAA3840_MODES.txt
 	echo "dwe = \"dewarp_config/daA3840_30mc_1080P.json\"" >> DAA3840_MODES.txt
+
+	# OV5647 modes file
+	echo -n "" > OV5647_MODES.txt
+        echo "[mode.0]" >> OV5647_MODES.txt
+        echo "xml = \"OV5647_8M_02_1080p_linear.xml\"" >> OV5647_MODES.txt
+        echo "dwe = \"dewarp_config/sensor_dwe_bypass_1080P_config.json\"" >> OV5647_MODES.txt
 }
 
 # write the sensonr config file
@@ -194,7 +202,7 @@ load_modules () {
 write_default_mode_files
 
 echo "Trying configuration \"$ISP_CONFIG\"..."
-MODULES_TO_REMOVE=("basler-camera-driver-vvcam" "os08a20" "ov2775" "${MODULES[@]}")
+MODULES_TO_REMOVE=("basler-camera-driver-vvcam" "os08a20" "ov2775" "ov5647" "${MODULES[@]}")
 case "$ISP_CONFIG" in
 		basler_4k )
 			MODULES=("basler-camera-driver-vvcam" "${MODULES[@]}")
@@ -307,6 +315,15 @@ case "$ISP_CONFIG" in
                          MODE="1"
                          write_sensor_cfg_file "Sensor0_Entry.cfg" $CAM_NAME $DRV_FILE $MODE_FILE $MODE
                          write_sensor_cfg_file "Sensor1_Entry.cfg" $CAM_NAME $DRV_FILE $MODE_FILE $MODE
+                         ;;
+		 ov5647_1080p60 )
+                         MODULES=("ov5647" "${MODULES[@]}")
+                         RUN_OPTION="CAMERA0"
+                         CAM_NAME="ov5647"
+                         DRV_FILE="ov5647.drv"
+                         MODE_FILE="OV5647_MODES.txt"
+                         MODE="0"
+                         write_sensor_cfg_file "Sensor0_Entry.cfg" $CAM_NAME $DRV_FILE $MODE_FILE $MODE
                          ;;
 		 *)
 			echo "ISP configuration \"$ISP_CONFIG\" unsupported."
