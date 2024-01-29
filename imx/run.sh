@@ -326,7 +326,7 @@ case "$ISP_CONFIG" in
                          MODE="0"
                          write_sensor_cfg_file "Sensor0_Entry.cfg" $CAM_NAME $DRV_FILE $MODE_FILE $MODE
                          ;;
-		 ov5647_1080p60 )
+		 dual_ov5647_1080p60 )
                          MODULES=("ov5647" "${MODULES[@]}")
                          RUN_OPTION="DUAL_CAMERA"
                          CAM_NAME="ov5647"
