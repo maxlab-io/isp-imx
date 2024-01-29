@@ -35,6 +35,7 @@ USAGE+="\tdual_os08a20_1080p60hdr - dual os08a20 cameras on MIPI-CSI1/2, 1920x10
 USAGE+="\tos08a20_4khdr           - single os08a20 camera on MIPI-CSI1, 3840x2160, 30 fps, HDR configuration\n"
 
 USAGE+="\tov5647_1080p60         - single ov5647 camera on MIPI-CSI1, 1920x1080, 60 fps\n"
+USAGE+="\tovdual_5647_1080p60         - single ov5647 camera on MIPI-CSI1, 1920x1080, 60 fps\n"
 
 # parse command line arguments
 while [ "$1" != "" ]; do
@@ -324,6 +325,16 @@ case "$ISP_CONFIG" in
                          MODE_FILE="OV5647_MODES.txt"
                          MODE="0"
                          write_sensor_cfg_file "Sensor0_Entry.cfg" $CAM_NAME $DRV_FILE $MODE_FILE $MODE
+                         ;;
+		 ov5647_1080p60 )
+                         MODULES=("ov5647" "${MODULES[@]}")
+                         RUN_OPTION="DUAL_CAMERA"
+                         CAM_NAME="ov5647"
+                         DRV_FILE="ov5647.drv"
+                         MODE_FILE="OV5647_MODES.txt"
+                         MODE="0"
+                         write_sensor_cfg_file "Sensor0_Entry.cfg" $CAM_NAME $DRV_FILE $MODE_FILE $MODE
+                         write_sensor_cfg_file "Sensor1_Entry.cfg" $CAM_NAME $DRV_FILE $MODE_FILE $MODE
                          ;;
 		 *)
 			echo "ISP configuration \"$ISP_CONFIG\" unsupported."

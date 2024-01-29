@@ -53,6 +53,16 @@ elif [ $NR_DEVICE_TREE_OV5647 -eq 1 ]; then
         # Available configurations: ov5647_1080p60
         exec ./run.sh -c ov5647_1080p60 -lm
 
+# check if the ov5647 device has been enabled in the device tree
+elif [ $NR_DEVICE_TREE_OV5647 -eq 2 ]; then
+
+        echo "Starting isp_media_server for Single ov5647"
+
+        cd $RUNTIME_DIR
+        # Default configuration for OV5647: ov5647_1080p60
+        # Available configurations: ov5647_1080p60
+        exec ./run.sh -c ov5647_1080p60 -lm
+
 # check if the os08a20 device has been enabled in the device tree
 elif [ $NR_DEVICE_TREE_OS08A20 -eq 1 ]; then
 
